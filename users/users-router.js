@@ -12,4 +12,22 @@ router.get('/', restricted, (req, res, next) => {
         .catch (err => res.status(500).json({ error: 'Unauthorized: could not get users' }));
 });
 
+router.delete('/logout', (req, res, next) => {
+    
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(400).json({ message: 'Unable to logout', err})
+            }
+            else {
+                res.send('Successfully Logged Out')
+            }
+        })
+    }
+    else {
+        res.end()
+    }
+});
+
+
 module.exports = router;

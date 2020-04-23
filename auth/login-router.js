@@ -21,21 +21,11 @@ router.post('/', (req, res, next) => {
         .catch(error => next(error));
 });
 
-router.delete('/logout', (req, res, next) => {
-    
-    if (req.session) {
-        req.session.destroy((err) => {
-            if (err) {
-                res.status(400).json({ message: 'Unable to logout', err})
-            }
-            else {
-                res.send('Successfully Logged Out')
-            }
-        })
-    }
-    else {
-        res.end()
-    }
+const errorHandler = ((error, req, res, next) => {
+    res.status(500).json({ error: 'Server error: unable to login' });
+    next();
 });
+
+router.use(errorHandler);
 
 module.exports = router;
